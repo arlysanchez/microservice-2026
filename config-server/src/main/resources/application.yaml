@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: default #modo dev el perfil es: defaul y en modo produccion es: prod
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/arlysanchez/microservice-config-2026.git
+          default-label: master
+          clone-on-start: true
+          username: arlysanchez
+          password: ${TOKEN}
+
+server:
+  port: 7777
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    server-url:
+      defaultZone: http://localhost:8761/eureka/
