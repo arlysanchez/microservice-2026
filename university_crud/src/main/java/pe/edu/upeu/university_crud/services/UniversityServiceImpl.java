@@ -6,6 +6,7 @@ import pe.edu.upeu.university_crud.entity.University;
 import pe.edu.upeu.university_crud.repository.UniversityRepository;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -44,5 +45,10 @@ public class UniversityServiceImpl implements UniversityService {
                 .orElseThrow(()-> new NoSuchElementException("University not found"));
         this.universityRepository.delete(universityToDelete);
 
+    }
+
+    @Override
+    public Optional<University> findById(Long id) {
+                return universityRepository.findById(id);
     }
 }

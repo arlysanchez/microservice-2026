@@ -53,6 +53,15 @@ public class UniversityController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Search by Id university")
+    @GetMapping("/id/{id}")
+    public ResponseEntity<University> findById(@PathVariable Long id){
+        return universityService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 
 
 }
