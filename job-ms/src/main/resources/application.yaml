@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: job-ms
+
+  profiles:
+    default: default
+
+  config:
+    import: "configserver:http://localhost:7777"
+
+  datasource:
+    url: ${db.url}
+    username: ${db.username}
+    password: ${db.password}
+    hikari:
+      maximum-pool-size: ${db.maximum-pool-size}
+      connection-timeout: ${db.connection-timeout}
+    initialization-mode: always
+
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: jobs_schema
+        format_sql: 'true'
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        SQL: DEBUG
+server:
+  servlet:
+    context-path: /job-ms
+  port: 8082 #puerto estatico 8081, puerto dinamico = 0
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    server-url:
+      defaultZone: http://localhost:8761/eureka/
