@@ -29,7 +29,7 @@ public class JobOfferServiceImpl implements JobOfferService{
 
     @Override
     public Map<String, Object> getOfferWithUniversity(Long id) {
-        log.info("Buscar oferta por id: {}",id);
+      /*  log.info("Buscar oferta por id: {}",id);
         UniversityDTO university = universityClient.findById(id);
 
         if (university !=null){
@@ -40,6 +40,15 @@ public class JobOfferServiceImpl implements JobOfferService{
         Map<String, Object> response = new HashMap<>();
         response.put("university_recived", university);
         return response;
+       */
+        JobOffer offer = jobOfferRepository.findById(id).orElseThrow();
+
+        UniversityDTO university = universityClient.findById(offer.getIdUniversity());
+        Map<String,Object> response = new HashMap<>();
+        response.put("offer",offer);
+        response.put("university",university);
+        return response;
+
 
     }
 }

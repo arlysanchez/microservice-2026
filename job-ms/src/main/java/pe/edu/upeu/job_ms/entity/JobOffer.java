@@ -13,6 +13,7 @@ public class JobOffer {
     private String title;
     private String description;
     private Double salary;
+    private String company_name;
 
     @Column(name = "id_university")
     private Long idUniversity;
@@ -20,12 +21,13 @@ public class JobOffer {
     public JobOffer() {
     }
 
-    public JobOffer(Long id, Long idUniversity, Double salary, String description, String title) {
+    public JobOffer(Long id, String title, String description, Double salary, String company_name, Long idUniversity) {
         this.id = id;
-        this.idUniversity = idUniversity;
-        this.salary = salary;
-        this.description = description;
         this.title = title;
+        this.description = description;
+        this.salary = salary;
+        this.company_name = company_name;
+        this.idUniversity = idUniversity;
     }
 
     public Long getId() {
@@ -66,5 +68,13 @@ public class JobOffer {
 
     public void setIdUniversity(Long idUniversity) {
         this.idUniversity = idUniversity;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
     }
 }
