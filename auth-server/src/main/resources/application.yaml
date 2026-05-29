@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: auth-server
+
+  profiles:
+    default: default
+
+  config:
+    import: "configserver:http://localhost:7777"
+
+  datasource:
+    url: ${mysql-db.url}
+    username: ${mysql-db.username}
+    password: ${mysql-db.password}
+    driver-class-name: ${mysql-db.driver-class-name}
+
+    hikari:
+      maximum-pool-size: ${mysql-db.maximum-pool-size}
+      connection-timeout: ${mysql-db.connection-timeout}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+
+server:
+  servlet:
+    context-path: /auth-server
+
+  port: 3030
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+
+  client:
+    server-url:
+      defaultZone: http://localhost:8761/eureka/
