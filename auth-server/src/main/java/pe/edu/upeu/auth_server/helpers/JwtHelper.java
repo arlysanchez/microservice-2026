@@ -59,9 +59,13 @@ public class JwtHelper {
                 .parserBuilder()
                 .setSigningKey(this.getSecretKey())
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
+
+
+
+
 
     //crea el key secreto para firmar el token
     private SecretKey getSecretKey(){
