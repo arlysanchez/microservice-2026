@@ -74,7 +74,7 @@ public class GatewayBeans {
                                 .uri("lb://job-ms")
                 )
                 .route(route -> route
-                        .path("auth-server/auth/**")
+                        .path("/auth-server/auth/**")
                         .uri("lb://auth-server")
                 )
                 .build();
