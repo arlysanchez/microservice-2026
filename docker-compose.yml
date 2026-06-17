@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
     db:
@@ -14,3 +14,99 @@ services:
         POSTGRES_PASSWORD: 'admin123'
       ports:
         - '5433:5432'
+    
+    mysql-db:
+      image: mysql:8.0
+      container_name: mysql-security
+      restart: always
+
+      environment:
+        MYSQL_DATABASE: security
+        MYSQL_ROOT_PASSWORD: security_2026
+
+      ports:
+        - "3308:3306"
+
+      volumes:
+        - mysql_data:/var/lib/mysql
+        - ./mysql-bd/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    
+    
+    ms-registry-server:
+      image: ms-registry-server:latest
+      build: ./registry-server
+      container_name: ms-registry-server
+      restart: always
+      ports:
+        - "8761:8761"
+    
+    ms-config-server:
+      image: ms-config-server:latest
+      build: ./config-server
+      container_name: ms-config-server
+      restart: always
+      ports:
+        - "7777:7777"
+      depends_on:
+        - ms-registry-server
+      environment:
+        EUREKA_URL: http://ms-registry-server:8761/eureka/
+
+    ms-university:
+      image: ms-university:latest
+      build: ./university_crud
+      container_name: ms-university
+      restart: always
+      ports:
+        - "8081:8081"
+      depends_on:
+        - ms-config-server
+        - db
+      environment:
+        EUREKA_URL: http://ms-registry-server:8761/eureka/
+        CONFIG_SERVER_HOST: 'http://ms-config-server:7777'
+
+    
+    ms-job:
+      image: ms-job:latest
+      build: ./job-ms
+      container_name: ms-job
+      restart: always
+      ports:
+        - "8082:8082"
+      depends_on:
+        - ms-config-server
+        - db
+      environment:
+        EUREKA_URL: http://ms-registry-server:8761/eureka/
+        CONFIG_SERVER_HOST: 'http://ms-config-server:7777'
+    
+    ms-auth:
+      image: ms-auth-server:latest
+      build: ./auth-server
+      container_name: ms-auth
+      restart: always
+      ports:
+        - "3030:3030"
+      depends_on:
+        - ms-config-server
+        - mysql-db
+      environment:
+        EUREKA_URL: http://ms-registry-server:8761/eureka/
+        CONFIG_SERVER_HOST: 'http://ms-config-server:7777'
+    
+    ms-gateway:
+      image: ms-gateway:latest
+      build: ./gateway
+      container_name: ms-gateway
+      restart: always
+      ports:
+        - "4040:4040"
+      depends_on:
+        - ms-config-server
+      environment:
+        EUREKA_URL: http://ms-registry-server:8761/eureka/
+
+volumes:
+  mysql_data:
+    

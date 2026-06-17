@@ -6,7 +6,8 @@ spring:
     default: default
 
   config:
-    import: "configserver:http://localhost:7777"
+    #import: "configserver:http://localhost:7777"
+    import: "optional:configserver:${CONFIG_SERVER_HOST}"
 
   datasource:
     url: ${db.url}
@@ -42,5 +43,6 @@ eureka:
   instance:
     instance-id: "${spring.application.name}:${random.value}"
   client:
-    server-url:
-      defaultZone: http://localhost:8761/eureka/
+    service-url:
+      #defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL}

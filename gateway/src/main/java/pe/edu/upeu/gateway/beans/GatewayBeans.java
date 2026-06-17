@@ -57,12 +57,12 @@ public class GatewayBeans {
         return builder.routes()
                 .route(
                         route -> route
-                                .path("/university-crud/**")
+                                .path("/university_crud/**")
                                 .filters(filter ->{
                                     filter.filter(this.authFilter);
                                     return filter;
                                         } )
-                                .uri("lb://university-crud")
+                                .uri("http://ms-university:8081")
                 )
                 .route(
                         route -> route
@@ -71,7 +71,7 @@ public class GatewayBeans {
                                     filter.filter(this.authFilter);
                                     return filter;
                                 } )
-                                .uri("lb://job-ms")
+                                .uri("http://ms-job:8082")
                 )
                 .route(route -> route
                         .path("/auth-server/auth/**")

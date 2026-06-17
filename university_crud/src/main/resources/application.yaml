@@ -1,12 +1,13 @@
 spring:
   application:
-    name: university-crud
+    name: university_crud
 
   profiles:
     default: default
 
   config:
-    import: "configserver:http://localhost:7777"
+    #import: "configserver:http://localhost:7777"
+    import: "optional:configserver:${CONFIG_SERVER_HOST}"
 
   datasource:
     url: ${db.url}
@@ -20,7 +21,7 @@ spring:
   jpa:
     show-sql: 'true'
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: 'true'
@@ -35,11 +36,12 @@ logging:
         SQL: DEBUG
 server:
   servlet:
-    context-path: /university-crud
+    context-path: /university_crud
   port: 8081 #puerto estatico 8081, puerto dinamico = 0
 eureka:
   instance:
     instance-id: "${spring.application.name}:${random.value}"
   client:
-    server-url:
-      defaultZone: http://localhost:8761/eureka/
+    service-url:
+      #defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL}
